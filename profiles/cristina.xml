@@ -1,0 +1,29 @@
+<root>
+	<name>cristina</name>
+	<level id="EASY">
+		<puzzle id="1">23</puzzle>
+		<puzzle id="2">14</puzzle>
+		<puzzle id="3">21</puzzle>
+		<puzzle id="4">11</puzzle>
+		<puzzle id="5">23</puzzle>
+		<puzzle id="6">22</puzzle>
+
+	</level>
+	<level id="GODMODE">
+		<puzzle id="1">7</puzzle>
+		<puzzle id="2">8</puzzle>
+		<puzzle id="3">9</puzzle>
+		<puzzle id="4">10</puzzle>
+		<puzzle id="5">2</puzzle>
+		<puzzle id="6">23</puzzle>
+	</level>
+	<level id="TUTORIAL">
+		
+		<puzzle id="1">12</puzzle>
+		<puzzle id="2">19</puzzle>
+		<puzzle id="3">12</puzzle>
+		<puzzle id="4">11</puzzle>
+		<puzzle id="5">22</puzzle>
+		<puzzle id="6">13</puzzle>
+	</level>
+</root>

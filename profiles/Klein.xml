@@ -1,0 +1,29 @@
+<root>
+	<name>Klein</name>
+	<level id="EASY">
+		<puzzle id="1">2</puzzle>
+		<puzzle id="2">1</puzzle>
+		<puzzle id="3">3</puzzle>
+		<puzzle id="4">6</puzzle>
+		<puzzle id="5">3</puzzle>
+		<puzzle id="6">7</puzzle>
+
+	</level>
+	<level id="GODMODE">
+		<puzzle id="1">1</puzzle>
+		<puzzle id="2">2</puzzle>
+		<puzzle id="3">3</puzzle>
+		<puzzle id="4">4</puzzle>
+		<puzzle id="5">5</puzzle>
+		<puzzle id="6">6</puzzle>
+	</level>
+	<level id="TUTORIAL">
+		
+		<puzzle id="1">10</puzzle>
+		<puzzle id="2">9</puzzle>
+		<puzzle id="3">7</puzzle>
+		<puzzle id="4">11</puzzle>
+		<puzzle id="5">22</puzzle>
+		<puzzle id="6">4</puzzle>
+	</level>
+</root>

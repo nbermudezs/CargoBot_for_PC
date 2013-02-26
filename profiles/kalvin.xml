@@ -1,0 +1,29 @@
+<root>
+	<name>Kalvin</name>
+	<level id="EASY">
+		<puzzle id="1">0</puzzle>
+		<puzzle id="2">11</puzzle>
+		<puzzle id="3">13</puzzle>
+		<puzzle id="4">12</puzzle>
+		<puzzle id="5">23</puzzle>
+		<puzzle id="6">27</puzzle>
+
+	</level>
+	<level id="GODMODE">
+		<puzzle id="1">21</puzzle>
+		<puzzle id="2">2</puzzle>
+		<puzzle id="3">12</puzzle>
+		<puzzle id="4">12</puzzle>
+		<puzzle id="5">5</puzzle>
+		<puzzle id="6">26</puzzle>
+	</level>
+	<level id="TUTORIAL">
+		
+		<puzzle id="1">23</puzzle>
+		<puzzle id="2">29</puzzle>
+		<puzzle id="3">27</puzzle>
+		<puzzle id="4">21</puzzle>
+		<puzzle id="5">2</puzzle>
+		<puzzle id="6">23</puzzle>
+	</level>
+</root>

@@ -1,0 +1,29 @@
+<root>
+	<name>sao</name>
+	<level id="EASY">
+		<puzzle id="1">1</puzzle>
+		<puzzle id="2">2</puzzle>
+		<puzzle id="3">3</puzzle>
+		<puzzle id="4">4</puzzle>
+		<puzzle id="5">5</puzzle>
+		<puzzle id="6">6</puzzle>
+
+	</level>
+	<level id="GODMODE">
+		<puzzle id="1">11</puzzle>
+		<puzzle id="2">22</puzzle>
+		<puzzle id="3">23</puzzle>
+		<puzzle id="4">24</puzzle>
+		<puzzle id="5">25</puzzle>
+		<puzzle id="6">26</puzzle>
+	</level>
+	<level id="TUTORIAL">
+		
+		<puzzle id="1">1</puzzle>
+		<puzzle id="2">1</puzzle>
+		<puzzle id="3">1</puzzle>
+		<puzzle id="4">1</puzzle>
+		<puzzle id="5">22</puzzle>
+		<puzzle id="6">1</puzzle>
+	</level>
+</root>

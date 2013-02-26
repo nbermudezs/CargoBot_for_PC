@@ -1,0 +1,29 @@
+<root>
+	<name>kamisama</name>
+	<level id="EASY">
+		<puzzle id="1">20</puzzle>
+		<puzzle id="2">10</puzzle>
+		<puzzle id="3">13</puzzle>
+		<puzzle id="4">16</puzzle>
+		<puzzle id="5">23</puzzle>
+		<puzzle id="6">7</puzzle>
+
+	</level>
+	<level id="GODMODE">
+		<puzzle id="1">10</puzzle>
+		<puzzle id="2">20</puzzle>
+		<puzzle id="3">1</puzzle>
+		<puzzle id="4">4</puzzle>
+		<puzzle id="5">5</puzzle>
+		<puzzle id="6">26</puzzle>
+	</level>
+	<level id="TUTORIAL">
+		
+		<puzzle id="1">11</puzzle>
+		<puzzle id="2">19</puzzle>
+		<puzzle id="3">17</puzzle>
+		<puzzle id="4">11</puzzle>
+		<puzzle id="5">22</puzzle>
+		<puzzle id="6">24</puzzle>
+	</level>
+</root>

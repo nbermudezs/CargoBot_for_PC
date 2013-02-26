@@ -1,0 +1,29 @@
+<root>
+	<name>aoki</name>
+	<level id="EASY">
+		<puzzle id="1">12</puzzle>
+		<puzzle id="2">11</puzzle>
+		<puzzle id="3">13</puzzle>
+		<puzzle id="4">16</puzzle>
+		<puzzle id="5">13</puzzle>
+		<puzzle id="6">17</puzzle>
+
+	</level>
+	<level id="GODMODE">
+		<puzzle id="1">11</puzzle>
+		<puzzle id="2">12</puzzle>
+		<puzzle id="3">13</puzzle>
+		<puzzle id="4">14</puzzle>
+		<puzzle id="5">15</puzzle>
+		<puzzle id="6">16</puzzle>
+	</level>
+	<level id="TUTORIAL">
+		
+		<puzzle id="1">0</puzzle>
+		<puzzle id="2">19</puzzle>
+		<puzzle id="3">17</puzzle>
+		<puzzle id="4">1</puzzle>
+		<puzzle id="5">2</puzzle>
+		<puzzle id="6">14</puzzle>
+	</level>
+</root>

@@ -1,0 +1,29 @@
+<root>
+	<name>nerv</name>
+	<level id="EASY">
+		<puzzle id="1">21</puzzle>
+		<puzzle id="2">11</puzzle>
+		<puzzle id="3">21</puzzle>
+		<puzzle id="4">16</puzzle>
+		<puzzle id="5">6</puzzle>
+		<puzzle id="6">7</puzzle>
+
+	</level>
+	<level id="GODMODE">
+		<puzzle id="1">10</puzzle>
+		<puzzle id="2">20</puzzle>
+		<puzzle id="3">0</puzzle>
+		<puzzle id="4">4</puzzle>
+		<puzzle id="5">9</puzzle>
+		<puzzle id="6">0</puzzle>
+	</level>
+	<level id="TUTORIAL">
+		
+		<puzzle id="1">0</puzzle>
+		<puzzle id="2">0</puzzle>
+		<puzzle id="3">0</puzzle>
+		<puzzle id="4">0</puzzle>
+		<puzzle id="5">0</puzzle>
+		<puzzle id="6">0</puzzle>
+	</level>
+</root>

@@ -1,0 +1,29 @@
+<root>
+	<name>daru</name>
+	<level id="EASY">
+		<puzzle id="1">21</puzzle>
+		<puzzle id="2">11</puzzle>
+		<puzzle id="3">21</puzzle>
+		<puzzle id="4">17</puzzle>
+		<puzzle id="5">11</puzzle>
+		<puzzle id="6">1</puzzle>
+
+	</level>
+	<level id="GODMODE">
+		<puzzle id="1">2</puzzle>
+		<puzzle id="2">3</puzzle>
+		<puzzle id="3">4</puzzle>
+		<puzzle id="4">5</puzzle>
+		<puzzle id="5">6</puzzle>
+		<puzzle id="6">7</puzzle>
+	</level>
+	<level id="TUTORIAL">
+		
+		<puzzle id="1">11</puzzle>
+		<puzzle id="2">15</puzzle>
+		<puzzle id="3">23</puzzle>
+		<puzzle id="4">14</puzzle>
+		<puzzle id="5">21</puzzle>
+		<puzzle id="6">18</puzzle>
+	</level>
+</root>

@@ -1,0 +1,37 @@
+<root>
+
+	<nivel>
+	<arm position="1"/>
+	
+	<stack id="1">
+	<caja color="cafe"/>
+	<caja color="verde"/>
+	<caja color="rojo"/>
+	<caja color="azul"/>
+	</stack>
+	<stack id="2">
+		
+	</stack>
+	<stack id="3">
+	
+	</stack>
+	
+</nivel>
+
+<solution>
+	<stack id="1">
+		
+	</stack>
+	<stack id="2">
+		
+	</stack>
+	<stack id="3">
+		<caja color="cafe"/>
+		<caja color="verde"/>
+		<caja color="rojo"/>
+		<caja color="azul"/>
+	</stack>
+	
+</solution>
+
+</root>
