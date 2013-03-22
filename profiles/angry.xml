@@ -16,8 +16,7 @@
 		<puzzle id="5">3</puzzle>
 		<puzzle id="6">2</puzzle>
 	</level>
-	<level id="TUTORIAL">
-		
+	<level id="TUTORIAL">		
 		<puzzle id="1">3</puzzle>
 		<puzzle id="2">3</puzzle>
 		<puzzle id="3">2</puzzle>

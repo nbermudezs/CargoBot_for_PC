@@ -1,9 +1,12 @@
+
 import sys
 import string
 import random
 import math
 from PySFML import sf
 from Application import Application
+from xml.etree.ElementTree import ElementTree
+from xml.etree.ElementTree import Element
 
 
 class LevelEditor_Objects:
@@ -114,17 +117,19 @@ class Drawable_Scenario:
         self.xf = xf
         self.yf = yf
         self.final = final
-
+        
+        self.btnwidth = 44
+        
         self.num_stacks = 8 #Application.getNumberStacksLevel(level_name, puzzle_number)
         stack_desp = (8 - self.num_stacks)/2
         self.scale_x = (xf - xi)/1200.0
         self.scale_y = (yf - yi)/700.0
         self.stack_desp = stack_desp 
         self.stacks = []
-        self.i=2      
+        self.i=1      
         
         #for i in range(self.num_stacks):
-        self.stacks.append(Drawable_Stack(1,self.scale_x, [xi, yi, xf, yf], final, stack_desp))
+        self.stacks.append(Drawable_Stack(0,self.scale_x, [xi, yi, xf, yf], final, stack_desp))
       #  self.stacks.append(Drawable_Stack(self.num_stacks,self.scale_x, [self.xi, self.yi, self.xf, self.yf], final, stack_desp))
         
         
@@ -185,12 +190,45 @@ class Drawable_Scenario:
 
 
     def addStack(self):
-        if(self.i <= 8):
+        if(self.i < 8):
             stack_desp = (8 - self.num_stacks)/2
-            self.stack_desp = stack_desp 
+            self.stack_desp = stack_desp
+          
             self.stacks.append(Drawable_Stack(self.i,self.scale_x, [self.xi, self.yi, self.xf, self.yf], self.final, stack_desp))
+            
             self.i += 1
+
+    def deleteStack(self,cual):
+        Application.putOnDeleteList(self.stacks[cual])
+        del self.stacks[cual]
+        self.i-= 1
+
+        x=cual
+        while( x< len(self.stacks)):
+            self.stacks[x].Reposition(x)
+            x+=1
+           
+            
+           
+
+    def Clear(self):
+        x=1
         
+        length = len(self.stacks)
+        while x < length:
+            del self.stacks[1]
+            x+=1
+            
+        
+        length = len(self.stacks[0].stack)
+        x=0
+        while x < length:
+            del self.stacks[0].stack[0]
+            x+=1
+            
+            
+        self.i =1
+            
     def Update(self, frameTime):
         return self.arm.Update(frameTime)
 
@@ -209,21 +247,40 @@ class Drawable_Scenario:
                 return i.stack[0].box.GetSubRect().GetHeight()*i.stack[0].box.GetScale()[0]
         return 80*self.scale_x
 
-    def PlaceBox(self, box):
+    def PlaceBox(self,stack, box):
 
-        scenario_boundaries = [self.xi, self.yi, self.xf, self.yf]
-        stack_boundaries = [(160 + 110*(1+self.stack_desp) + 15)*self.scale_x + scenario_boundaries[0], 650,
-                            (160 + 110*(1+self.stack_desp) + 15)*self.scale_x + scenario_boundaries[0] + 90*self.scale_x, 650 + 30*self.scale_x]
+        if(len(self.stacks)>stack):
+            scenario_boundaries = [self.xi, self.yi, self.xf, self.yf]
+            stack_boundaries = [(120 + 110*(1+self.stack_desp) + 15)*self.scale_x + scenario_boundaries[0], 650,
+                                (120 + 110*(1+self.stack_desp) + 15)*self.scale_x + scenario_boundaries[0] + 90*self.scale_x, 650 + 30*self.scale_x]
         
-        itembox = Drawable_Box(1,box,stack_boundaries,self.scale_x,1)
+       
+            #if box[0] <=8:
+
+            #newlen =
+            arraybox = [len(self.stacks[stack].stack),box]
+            print arraybox
+            
+            itembox = Drawable_Box(stack,arraybox,stack_boundaries,self.scale_x,stack)
+            #self.stacks.append(itembox)
+            self.stacks[stack].InsertOnTop(itembox)
+            
+            
+    def BoxClicked(self, x, y, stack):
+
         
-        self.stacks[0].InsertOnTop(itembox)
-        box[0]+=1
+        box = self.getBoxClicked(x,y,self.stacks[stack])
+        
+        #print (["cajita",box.id,box.color])
 
+        temp = box
 
+        del self.stacks[stack].stack[box.id]
 
-
-    def InstructionClicked(self, x, y, ref):
+        
+        
+        return (temp.box,temp.color)
+        """
         res = self.PlaceInstruction(x, y)
         if res[0] == False:
             return False
@@ -233,6 +290,7 @@ class Drawable_Scenario:
             ref.SetDraggingInstruction(ins_type)
             return True
         return False
+        """
     
     def Pintar(self, window):
         window.Draw(self.bg)
@@ -243,6 +301,19 @@ class Drawable_Scenario:
             stack.Pintar(window)
         if self.there_is_arm:
             self.arm.Pintar(window)
+
+    def getBoxClicked(self,x,y,stack):
+
+        
+        for box in stack.stack:
+            pos = []
+            pos = box.GetPosition()
+            lol = (self.btnwidth + pos[0],self.btnwidth + pos[1])
+            if x>pos[0] and y>pos[1] and x<lol[0] and y<lol[1]:
+                box.SetPerfectPosition(len(stack.stack))
+                return box
+    
+        
 
 """
 ---------------------------
@@ -258,6 +329,7 @@ class Drawable_Stack:
         self.scenario_boundaries = scenario_boundaries
         self.final = final
         self.stack_desp = stack_desp
+        self.scale = scale
         self.stack = []
 
         image = sf.Image()
@@ -266,7 +338,9 @@ class Drawable_Stack:
         self.base.Resize(90*scale, 30*scale)
         self.base.SetCenter(0, 0)
         self.base.SetPosition((120 + 110*(stack_id+stack_desp) + 15)*scale + scenario_boundaries[0],650)
-        
+
+        self.stack_boundaries = [(120 + 110*(stack_id+stack_desp) + 15)*scale + scenario_boundaries[0], 650,
+                                (120 + 110*(stack_id+stack_desp) + 15)*scale + scenario_boundaries[0] + 90*scale, 650 + 30*scale]
       #  self.setInitialState(stack_id, scale, scenario_boundaries, final, stack_desp)
 
 
@@ -276,8 +350,8 @@ class Drawable_Stack:
         else:
             boxes = Application.getColorBoxFromStack(level_name, puzzle_number, stack_id+1)
         
-        stack_boundaries = [(120 + 110*(stack_id+stack_desp) + 15)*scale + scenario_boundaries[0], 650,
-                            (120 + 110*(stack_id+stack_desp) + 15)*scale + scenario_boundaries[0] + 90*scale, 650 + 30*scale]
+        self.stack_boundaries = [(120 + 110*(stack_id+stack_desp) + 15)*scale + scenario_boundaries[0], 650,
+                                (120 + 110*(stack_id+stack_desp) + 15)*scale + scenario_boundaries[0] + 90*scale, 650 + 30*scale]
 
         for box in boxes:
             self.stack.append(Drawable_Box(stack_id, box, stack_boundaries, scale, len(boxes)))
@@ -285,6 +359,16 @@ class Drawable_Stack:
         self.scale = scale
         self.stack_boundaries = stack_boundaries
 
+    def Reposition(self, stack_id):
+        self.stack_id = stack_id
+        self.stack_boundaries = [(120 + 110*(stack_id+self.stack_desp) + 15)*self.scale + self.scenario_boundaries[0], 650,
+                                (120 + 110*(stack_id+self.stack_desp) + 15)*self.scale + self.scenario_boundaries[0] + 90*self.scale, 650 + 30*self.scale]
+        
+        self.base.SetPosition((120 + 110*(stack_id+self.stack_desp) + 15)*self.scale + self.scenario_boundaries[0],650)
+        for box in self.stack:
+            box.Reposition(self.stack_boundaries)
+            
+            
     def ResetConfigs(self):
         while len(self.stack)>0:
             Application.putOnDeleteList(self.stack.pop())
@@ -329,7 +413,8 @@ class Drawable_Stack:
 
     def InsertOnTop(self, box):
         box.stack_id = self.stack_id
-   #     box.stack_boundaries = self.stack_boundaries
+      #  print(self.stack_id)
+        box.stack_boundaries = self.stack_boundaries
         box.SetPerfectPosition(len(self.stack))
         self.stack.insert(0, box)
     
@@ -695,7 +780,7 @@ class Drawable_Box:
         self.color = box[1]
         self.DIRECTORIO = "images/gameplay/"
         self.DefinirBox(stack_id, box, scale, tot)
-
+        self.pos = 0
     def DefinirBox(self, stack_id, box, scale, tot):
         rand_desp = random.randrange(int(-5*scale), int(5*scale))
         self.box = Application.createSfSprite(self.DIRECTORIO+"box_"+self.color+".png",
@@ -707,7 +792,13 @@ class Drawable_Box:
         rand_desp = random.randrange(int(-5*self.scale), int(5*self.scale))
         self.box.SetPosition(self.stack_boundaries[0] + 5*self.scale + rand_desp, 
                              self.stack_boundaries[1] - math.ceil(80*self.scale*(pos + 1)))
+        self.pos = pos
 
+    def Reposition(self,stack_boundaries):
+        rand_desp = random.randrange(int(-5*self.scale), int(5*self.scale))
+        self.box.SetPosition(stack_boundaries[0] + 5*self.scale + rand_desp, 
+                             stack_boundaries[1] - math.ceil(80*self.scale*(self.pos + 1)))
+        
     def Pintar(self, window):
         window.Draw(self.box)
 
@@ -720,3 +811,54 @@ class Drawable_Box:
     def Equals(self, box):
         #return (self.id == box.id and self.color == box.color)
         return self.color == box.color
+
+    def SetPosition(self,x,y):
+        self.box.SetPosition(x,y)
+        
+    def GetPosition(self):
+        return self.box.GetPosition()
+
+
+#############################################
+
+class GenerarXML:
+
+    def __init__(self):
+        pass
+    
+    def Generar(self,scene,goal):
+        root = Element('root')
+        nivel = Element('nivel')
+        solution = Element('solution')
+
+        arm = Element('arm',{'position':str(scene.armPos)})
+
+        
+        nivel.append(arm)
+
+        for stack in scene.stacks:
+            elstack = Element('stack', {'id':str(stack.stack_id+1)})
+            for box in stack.stack:
+                elbox = Element('caja',{'color':box.color})
+                elstack.append(elbox)
+            nivel.append(elstack)
+
+        for stack in goal.stacks:
+            elstack = Element('stack', {'id':str(stack.stack_id+1)})
+            for box in stack.stack:
+                elbox = Element('caja',{'color':box.color})
+                elstack.append(elbox)
+            solution.append(elstack)    
+            
+        root.append(nivel)
+        root.append(solution)
+
+        ElementTree(root).write('levels\LEVELEDITOR\customtest.xml')
+        #s = tostring(goal)
+        
+     
+        
+        
+        
+
+    

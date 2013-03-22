@@ -110,19 +110,19 @@ class Options_Menu:
         if self.lastplayer == None:
             text = "You haven't selected or created a username"
         else:
-            text = "Welcome, "+self.lastplayer
+            text = "[ Welcome, "+self.lastplayer + "]"
         font = sf.Font()
         font = sf.Font.GetDefaultFont()
         #font.LoadFromFile('my_downloaded_font.ttf', 50)
         self.welcomemsg = sf.String(text, font)
         Application.username = self.lastplayer
-        color = sf.Color(255, 204, 149)
+        color = sf.Color(255, 255, 255)
         rect = self.welcomemsg.GetRect()
         self.welcomemsg.SetColor(color)
         self.welcomemsg.SetCenter(0,0)
         
         self.welcomemsg.SetSize(35)
-        self.welcomemsg.SetPosition(1100 - rect.GetWidth(), 10)      
+        self.welcomemsg.SetPosition(1100 - rect.GetWidth(), 60)      
 
 
     def BotonPlay(self):

@@ -6,6 +6,8 @@ from PySFML import sf
 
 class Application:
     ready_to_delete = []
+    activeWindow = None
+    username = "NESTOR"
     @staticmethod
     def getFiles(directory):
         files = [ f for f in listdir(directory) if isfile(join(directory,f)) ]
@@ -23,7 +25,7 @@ class Application:
 
     @staticmethod
     def existsFile(directory, filename):
-        return (Application.getFiles(directory).index(filename) != -1)
+        return (filename in Application.getFiles(directory))
 
     @staticmethod
     def getDirectories(directory):
@@ -47,6 +49,8 @@ class Application:
             nivel.set("id", level_name)
             puzzles = Application.getFiles("levels/"+level_name)
             for puzzle in puzzles:
+                if "_top" in puzzle:
+                    continue
                 pz = Element("puzzle")
                 pz.set("id", puzzle)
                 pz.text = "0"
@@ -75,6 +79,13 @@ class Application:
 
     @staticmethod
     def updateTopFile(directory, filename, user, score, top_n = 5):
+        if not Application.existsFile(directory, filename):
+            Application.createTopFile(directory, filename, top_n)
+
+        pla = Application.getTopPlayers(directory, filename)
+        t = [f for f in pla if f[0]==user and int(f[1])>score]
+        if len(t) == 0:
+            return False
         treeP = ElementTree()
         treeP.parse(directory+filename+".xml")
         root = treeP.getroot()
@@ -104,6 +115,14 @@ class Application:
         return ins
 
     @staticmethod
+    def getTopScores(level, puzzle_number):
+        try:
+            tuplas = Application.getTopPlayers("levels/"+level+"/", str(puzzle_number)+"_top")
+        except:
+            Application.createTopFile("levels/"+level+"/", str(puzzle_number)+"_top")
+        return Application.getTopPlayers("levels/"+level+"/",str(puzzle_number)+"_top")
+
+    @staticmethod
     def getTopPlayers(directory, filename, top_n = 5):
         treeP = ElementTree()
         treeP.parse(directory + filename + ".xml")
@@ -128,6 +147,33 @@ class Application:
                 for i in level_.iter("puzzle"):
                     scores_tuplas.append((i.attrib["id"],i.text))
         return scores_tuplas
+
+    @staticmethod
+    def saveScore(username, level, puzzle, score):
+        retVal = "NOT_FOUND"
+        scores_tuplas = []
+        treeP = ElementTree()
+        treeP.parse("profiles/"+username+".xml")
+        root = treeP.getroot()
+        levels = root.findall("level")
+        for level_ in levels:
+            if level_.attrib["id"] == level:
+                for i in level_.iter("puzzle"):
+                    if i.attrib["id"] == str(puzzle):
+                        if i.text == "0":
+                            i.text = str(score)
+                            retVal = "FIRST_TIME"
+                        elif int(i.text)>int(score):
+                            i.text = str(score)
+                            retVal = "BETTER"
+                        elif int(i.text)<int(score):
+                            retVal = "NOT_BETTER"
+                        else:
+                            retVal = "EQUAL"
+                break
+
+        treeP.write("profiles/" + username + ".xml")
+        return retVal
 
     @staticmethod
     def getNumberStacksLevel(level, numberLevel):
@@ -201,6 +247,14 @@ class Application:
         del Application.ready_to_delete[:]
 
     @staticmethod
+    def getActiveWindow():
+        return Application.activeWindow
+
+    @staticmethod
+    def setActiveWindow(window):
+        Application.activeWindow = window
+
+    @staticmethod
     def createSfSprite(path, x, y, w, h):
         image = sf.Image()
         image.LoadFromFile(path)
@@ -212,8 +266,8 @@ class Application:
         return sprite
 
 if __name__ == "__main__":
-    pass
-    #Application.createTopFile("levels/GODMODE/","top_p1")
-    #Application.updateTopFile("levels/GODMODE/", "top_p1", "nestor", 100)
-    #Application.updateTopFile("levels/GODMODE/", "top_p1", "nestor", 97)
+    #pass
+    Application.createTopFile("levels/GODMODE/","top_p1")
+    Application.updateTopFile("levels/GODMODE/", "top_p1", "nestor", 100)
+    Application.updateTopFile("levels/GODMODE/", "top_p1", "nestor", 97)
     #print Application.getTopPlayers("levels/GODMODE/", "top_p1")

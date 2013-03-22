@@ -6,13 +6,13 @@ class Credits:
     def __init__(self):
         self.width = 1200
         self.heigth = 700
-        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "CARGO BOT - CONGRATULATIONS!", sf.Style.Close)
+        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "DRAG BOX - CREDITS!", sf.Style.Close)
         self.Evento = sf.Event()
         self.sonidos = None
 
     def DefinirFondo(self):
         image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"bgs/TBG.png")
+        image.LoadFromFile(self.DIRECTORIO+"bgs/credits.png")
         self.Fondo = sf.Sprite(image)
         self.Fondo.Resize(1200, 700)
         self.Fondo.SetCenter(0, 0)

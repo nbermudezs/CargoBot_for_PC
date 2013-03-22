@@ -2,6 +2,7 @@ import sys
 import string
 import random
 import math
+import time
 from PySFML import sf
 from Application import Application
 
@@ -11,7 +12,8 @@ class Drawable_Scenario:
         self.level_name = level_name        
         self.DIRECTORIO = "images/gameplay/"
         self.there_is_arm = False
-        self.goal = None        
+        self.goal = None
+        self.final = final
 
         self.num_stacks = Application.getNumberStacksLevel(level_name, puzzle_number)
         stack_desp = (8 - self.num_stacks)/2
@@ -24,13 +26,14 @@ class Drawable_Scenario:
             self.stacks.append(Drawable_Stack(i, level_name, puzzle_number,self.scale_x, [xi, yi, xf, yf], final, stack_desp))
 
         #imagenes
-        self.bg = Application.createSfSprite(self.DIRECTORIO+"scenario_bg_top.png", xi, yi, xf - xi, 651 - yi)
+        self.filter = Application.createSfSprite(self.DIRECTORIO+"scenario_filter.png", xi, yi, xf - xi, yf - yi)
+        self.bg = Application.createSfSprite(self.DIRECTORIO+"scenario_bg2.png", xi, yi, xf - xi, yf - yi)
 
-        self.bg_bot = Application.createSfSprite(self.DIRECTORIO+"scenario_bg_bottom.png", xi, 650, xf - xi, yf - 650)
+        #self.bg_bot = Application.createSfSprite(self.DIRECTORIO+"scenario_bg_bottom.png", xi, 650, xf - xi, yf - 650)
 
-        self.poleL = Application.createSfSprite(self.DIRECTORIO+"pole.png", xi, yi, 30, yf - yi)
+        #self.poleL = Application.createSfSprite(self.DIRECTORIO+"pole.png", xi, yi, 30, yf - yi)
 
-        self.poleR = Application.createSfSprite(self.DIRECTORIO+"pole.png", xf - 30, yi, 30, yf - yi)
+        #self.poleR = Application.createSfSprite(self.DIRECTORIO+"pole.png", xf - 30, yi, 30, yf - yi)
         if not final:
             self.BuildArm([xi, yi, xf, yf])
 
@@ -81,8 +84,11 @@ class Drawable_Scenario:
             self.arm.SetVelocity(velo)
 
     def Pintar(self, window):
-        window.Draw(self.bg)
-        window.Draw(self.bg_bot)
+        #if self.final:
+        #    window.Draw(self.filter)
+        #else:
+        #    window.Draw(self.bg)
+        #window.Draw(self.bg_bot)
         #window.Draw(self.poleL)
         #window.Draw(self.poleR)
         for stack in self.stacks:
@@ -172,6 +178,9 @@ class Drawable_Stack:
             i2 = 1
         return i1+i2
 
+    def IsFull(self):
+        return len(self.stack) == 6
+
     def InsertOnTop(self, box):
         box.stack_id = self.stack_id
         box.stack_boundaries = self.stack_boundaries
@@ -259,6 +268,8 @@ class Drawable_Arm:
         self.movingUp = False
         self.movingDown = False
         self.resuelto = False
+        self.ERROR = False
+        self.returnPoints = []
 
         self.attachedBox = None
 
@@ -434,6 +445,7 @@ class Drawable_Arm:
         self.movingDown = False
         self.movingUp = False
         self.catching = False
+        self.ERROR = False
         self.termino_instruction = True
         self.function_id = 0
         self.instruction_id = 0
@@ -451,13 +463,21 @@ class Drawable_Arm:
     def SiguienteInstruccion(self):
         if self.function_set != None:
             self.resuelto = self.scenario.CompareScenarios(self.scenario.goal)
-            print ("RESUELTO?: " +str(self.resuelto))
-            self.termino_instruction = False                    
+            self.termino_instruction = False
+            last_pos = self.function_set.GetPosLastInstruction(self.function_id)
+            if last_pos == -1 or last_pos < self.instruction_id:
+                if len(self.returnPoints)>0:
+                    tup = self.returnPoints.pop()
+                    self.function_id = tup[0]
+                    self.instruction_id = tup[1]
+                
             direction = self.function_set.GetInstruction(self.function_id, self.instruction_id)
             self.function_set.SetHighlightInstruction(self.function_id, self.instruction_id)
             self.instruction_id += 1
             if direction == "INS_DOWN":
                 self.movingDown = True
+            elif (direction in ["PROG_1", "PROG_2", "PROG_3", "PROG_4"]):
+                self.returnPoints.append((self.function_id, self.instruction_id))
             return direction
 
     def CambiarAProg(self, prog_id):
@@ -466,17 +486,31 @@ class Drawable_Arm:
         self.function_set.UnsetHighlightInstruction(self.function_id, self.instruction_id)
         self.termino_instruction = True
         self.StopStepByStep()
+        time.sleep(0.15)
+
+    def BuildErrorMessage(self):
+        x = Drawable_Message("ERROR_1", "mensaje")
+        return x
 
     def Update(self, frameTime):
         if self.HaSidoResuelto(frameTime):
             return True
+        if self.ERROR:
+            return False
         if self.moving:            
             if self.termino_instruction:
                 if self.playingStepByStep and self.stepDone:
                     return
-                self.direction = self.SiguienteInstruccion()                
+                stack = self.scenario.GetStack(self.currentPos)
+                
+                self.direction = self.SiguienteInstruccion()
+                if stack != None and self.direction != None:
+                    if stack.IsFull() and self.direction == "INS_DOWN" and self.attachedBox != None:
+                        window = Application.getActiveWindow()
+                        window.SetMessage(self.BuildErrorMessage())
+                        self.ERROR = True
             else:                
-                if self.direction == "INS_DOWN":
+                if self.direction == "INS_DOWN":                    
                     if self.movingDown:
                         if self.attachedBox == None:
                             limit = 595
@@ -529,6 +563,9 @@ class Drawable_Arm:
                 elif self.direction == "INS_RIGHT":
                     stack = self.scenario.GetStack(self.currentPos + 1)
                     if stack == None:
+                        self.ERROR = True
+                        window = Application.getActiveWindow()
+                        window.SetMessage(self.BuildErrorMessage())
                         return
                     if self.left_pin.GetPosition()[0] >= self.GetStackPosition(self.currentPos + 1):
                         x = self.left_pin.GetSize()[0]/2;
@@ -542,8 +579,11 @@ class Drawable_Arm:
                         self.MoverHorizontal(desp_x)
                 elif self.direction == "INS_LEFT":
                     stack = self.scenario.GetStack(self.currentPos - 1)
+                    
                     if stack == None:
-                        print ("ERROR!!")
+                        self.ERROR = True
+                        window = Application.getActiveWindow()
+                        window.SetMessage(self.BuildErrorMessage())
                         return
                     if self.left_pin.GetPosition()[0] <= self.GetStackPosition(self.currentPos - 1):
                         self.base_left_pin_pos = (self.GetStackPosition(self.currentPos - 1) + self.left_pin.GetSize()[0]/2, self.left_pin.GetPosition()[1])
@@ -584,7 +624,7 @@ class Drawable_Slider:
         scale_x = 356.0/768.0
         scale_y = 45.0/143.0
          
-        self.piece = Application.createSfSprite(self.DIRECTORIO+"piece.png", xi, yi, (xf - xi)*(2.03/13.0), yf - yi)
+        self.piece = Application.createSfSprite(self.DIRECTORIO+"piece.png", xi, yi - 10, (xf - xi)*(2.03/13.0), yf - yi + 9)
         self.fixed = Application.createSfSprite(self.DIRECTORIO+"fixed.png", xi, yi + (1.02/2.27)*(yf - yi), xf - xi, (yf - yi)*(1.25/2.27))
 
     def GetVelocity(self):
@@ -669,6 +709,13 @@ class Drawable_Function:
                 return None
             return self.instructions[ins_id].GetType()
 
+    def GetPosLastInstruction(self):
+        pos = -1
+        for i in range(len(self.instructions)):
+            if self.instructions[i] != None:
+                pos = i
+        return pos
+
     def GetCount(self):
         c = 0
         for i in self.instructions:
@@ -683,6 +730,22 @@ class Drawable_Function:
             if self.instructions[ins_id] == None:
                 return None
             return self.instructions[ins_id].GetSprite()
+
+    def HighLight(self, ins_id):
+        if ins_id >= len(self.instructions):
+            return 
+        else:
+            if self.instructions[ins_id] == None:
+                return 
+            self.instructions[ins_id].HighLight()
+
+    def UnHighLight(self, ins_id):
+        if ins_id >= len(self.instructions):
+            return 
+        else:
+            if self.instructions[ins_id] == None:
+                return 
+            self.instructions[ins_id].UnHighLight()
 
     def RemoveInstruction(self, pos):
         Application.putOnDeleteList(self.instructions[pos])
@@ -761,6 +824,12 @@ class Drawable_FunctionSet:
         else:
             return self.functions[function_id].GetInstruction(instruction_id)
 
+    def GetPosLastInstruction(self, function_id):
+        if function_id >= len(self.functions):
+            return -1
+        else:
+            return self.functions[function_id].GetPosLastInstruction()
+
     def ResetConfigs(self):
         if self.highlight_fid != None and self.highlight_iid != None:
             self.UnsetHighlightInstruction(self.highlight_fid, self.highlight_iid)
@@ -797,6 +866,7 @@ class Drawable_FunctionSet:
         self.oldPos = self.functions[funct_id].GetSprite(instr_id).GetPosition()
         self.functions[funct_id].GetSprite(instr_id).Resize(self.oldSize[0]*1.2, self.oldSize[1]*1.2)
         self.functions[funct_id].GetSprite(instr_id).SetPosition(self.oldPos[0] - 4, self.oldPos[1] - 4)
+        self.functions[funct_id].HighLight(instr_id)
 
     def UnsetHighlightInstruction(self, funct_id, instr_id):
         if self.highlight_fid == None:
@@ -807,6 +877,7 @@ class Drawable_FunctionSet:
             return
         self.functions[self.highlight_fid].GetSprite(self.highlight_iid).Resize(self.oldSize[0], self.oldSize[1])
         self.functions[self.highlight_fid].GetSprite(self.highlight_iid).SetPosition(self.oldPos[0], self.oldPos[1])
+        self.functions[self.highlight_fid].UnHighLight(self.highlight_iid)
 
     def InsertInstruction(self, function_id, instr_id, sprite, instr_type):
         di = Drawable_Instruction(function_id, instr_id, sprite, instr_type)
@@ -837,6 +908,7 @@ class Drawable_Instruction:
         self.sprite = sprite
         size = (516 - 125)/8
         self.sprite.SetPosition(131+pos*size, 169+80*function_id)
+        self.highligth = False
 
     def SetRotation(self, rotation):
         self.sprite.SetRotation(rotation)
@@ -850,6 +922,17 @@ class Drawable_Instruction:
     def Pintar(self, window):
         window.Draw(self.sprite)
 
+    def HighLight(self):
+        self.higlight = True
+        image = sf.Image()
+        image.LoadFromFile("images/gameplay/img_" + self.type + "_2.png")
+        self.sprite.SetImage(image)
+
+    def UnHighLight(self):
+        self.higlight = False
+        image = sf.Image()
+        image.LoadFromFile("images/gameplay/img_" + self.type + ".png")
+        self.sprite.SetImage(image)
 
 """
 FIN CLASS DRAWABLE_INSTRUCTION
@@ -871,7 +954,7 @@ class Drawable_Toolbox:
         width_btns = self.btnwidth
         height_btns = self.btnwidth
 
-        self.bg = Application.createSfSprite(self.DIRECTORIO+"bg_toolbox.png", 2, 167, self.bgwidth, self.bgheight)        
+        self.bg = Application.createSfSprite(self.DIRECTORIO+"bg_toolbox.png", 0, 167, self.bgwidth, self.bgheight)        
 
         self.botonDown = Application.createSfSprite(self.DIRECTORIO+"img_INS_DOWN.png", posX_btns, 184, width_btns, height_btns)
 
@@ -887,7 +970,17 @@ class Drawable_Toolbox:
 
         self.botonProg4 = Application.createSfSprite(self.DIRECTORIO+"img_PROG_4.png", posX_btns, 569, width_btns, height_btns)
 
-        self.botonClear = Application.createSfSprite(self.DIRECTORIO+"img_INS_CLEAR.png", posX_btns, 634, width_btns, height_btns)
+        self.botonClear = Application.createSfSprite(self.DIRECTORIO+"img_INS_CLEAR_2.png", posX_btns, 634, width_btns, height_btns)
+
+    def DisableClear(self):
+        img = sf.Image()
+        img.LoadFromFile(self.DIRECTORIO+"img_INS_CLEAR_2.png")
+        self.botonClear.SetImage(img)
+
+    def EnableClear(self):
+        img = sf.Image()
+        img.LoadFromFile(self.DIRECTORIO+"img_INS_CLEAR.png")
+        self.botonClear.SetImage(img)
         
     def InstructionToolboxClicked(self, x, y):
         pos = self.bg.GetPosition()
@@ -931,3 +1024,53 @@ class Drawable_Toolbox:
         window.Draw(self.botonProg3)
         window.Draw(self.botonProg4)
         window.Draw(self.botonClear)
+
+
+"""
+FIN CLASS DRAWABLE_TOOLBOX
+---------------------------------------------------------------------
+INICIO CLASS DRAWABLE_MESSAGE
+"""
+
+class Drawable_Message:
+
+    def __init__(self, tipo, mensaje):
+        self.errorCount = 4
+        self.DIRECTORIO = "images/errors/"
+        self.fade = Application.createSfSprite(self.DIRECTORIO + "fade.png", 0, 0, 0, 0)
+        if tipo in ["ERROR_1", "ERROR_2"]:
+            self.DefinirMensaje(tipo, 0, 0, 350, 200)
+        else:
+            self.DefinirMensaje(tipo)
+        self.DefinirSprites()
+
+    def DefinirMensaje(self, tipo, x = 0, y = 0, w = 0, h = 0):
+        tipo = "ERROR_" + str(random.randint(0,self.errorCount - 1))
+        self.mensaje  = Application.createSfSprite(self.DIRECTORIO + tipo + ".png", x, y, w, h)
+
+    def DefinirSprites(self):
+        x = self.mensaje.GetPosition()[0] - 5
+        y = self.mensaje.GetPosition()[1] - 5
+        w = self.mensaje.GetSize()[0] + 10
+        h = self.mensaje.GetSize()[1] + 10
+        self.bg = Application.createSfSprite(self.DIRECTORIO+"bg.png", x, y, w, h)        
+        
+    def ButtonClicked(self, x, y):
+        pass
+
+    def Update(self, window):
+        wt = window.GetWidth()
+        ht = window.GetHeight()
+        w = self.mensaje.GetSize()[0]
+        h = self.mensaje.GetSize()[1]
+        self.fade.Resize(wt, ht)
+        self.bg.SetPosition((wt - w)/2, (ht - h)/2)
+        self.mensaje.SetPosition((wt - w)/2 + 5, (ht - h)/2 + 5)
+    
+    def Pintar(self, window):
+        #print ("tratando de pintarse!")
+        self.Update(window)
+        window.Draw(self.fade)
+        window.Draw(self.bg)
+        window.Draw(self.mensaje)
+        #window.Draw(self.botonOK)

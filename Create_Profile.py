@@ -9,7 +9,7 @@ class Create_Profile:
         self.heigth = 700
         self.blanco = sf.Color(250, 250, 250)
         self.negro =  sf.Color(0, 0, 0)
-        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "CARGO BOT - CREATE PROFILE", sf.Style.Close)
+        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "DRAG BOX - CREATE PROFILE", sf.Style.Close)
         self.Evento = sf.Event()
         self.window.SetFramerateLimit(60)
         self.DIRECTORIO = "images/"
@@ -34,34 +34,12 @@ class Create_Profile:
 
     def DefinirBotones(self):
         #boton create
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_create_1.png")
-        self.boton1 = sf.Sprite(image)
-        self.boton1.Resize(367,140)
-        self.boton1.SetCenter(0, 0)
-        self.boton1.SetPosition(434,504)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_create_2.png")
-        self.boton2 = sf.Sprite(image)
-        self.boton2.Resize(367,140)
-        self.boton2.SetCenter(0, 0)
-        self.boton2.SetPosition(434,504)
+        self.boton1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_create_1.png", 434, 504, 367, 140)
+        self.boton2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_create_2.png", 434, 504, 367, 140)
 
         #boton home
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_home_1.png")
-        self.botonHome1 = sf.Sprite(image)
-        self.botonHome1.Resize(85, 80)
-        self.botonHome1.SetCenter(0, 0)
-        self.botonHome1.SetPosition(1115, 0)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_home_2.png")
-        self.botonHome2 = sf.Sprite(image)
-        self.botonHome2.Resize(85, 80)
-        self.botonHome2.SetCenter(0, 0)
-        self.botonHome2.SetPosition(1115, 0)
+        self.botonHome1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_home_1.png", 1200-157, 0, 157, 80)
+        self.botonHome2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_home_2.png", 1200-157, 0, 157, 80)
 
         image = sf.Image()
         image.LoadFromFile(self.DIRECTORIO+"buttons/CREATE.png")
@@ -105,7 +83,7 @@ class Create_Profile:
     def BotonHovered(self, x, y):
         if(x>688 and x<872 and y>348 and y<509):
             return "CREATE"
-        if(x>1115 and x<1200 and y>0 and y<80):
+        if(x>1200-157 and x<1200 and y>0 and y<80):
             return "HOME"
 
     def AppendToText(self, text):

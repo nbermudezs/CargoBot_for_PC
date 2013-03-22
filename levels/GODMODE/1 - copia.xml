@@ -1,0 +1,80 @@
+<root>
+
+	<nivel>
+	<arm position="2"/>
+	
+	<stack id="1">
+		
+	</stack>
+	<stack id="2">
+		<caja color="azul"/>
+		<caja color="azul"/>
+		<caja color="rojo"/>
+		<caja color="azul"/>
+	</stack>
+	<stack id="3">
+		<caja color="azul"/>
+		<caja color="rojo"/>
+		<caja color="azul"/>
+		<caja color="rojo"/>
+	</stack>
+	
+	<stack id="4">
+		<caja color="azul"/>
+		<caja color="azul"/>
+		<caja color="azul"/>
+	</stack>
+	<stack id="5">
+		<caja color="rojo"/>
+	</stack>
+	<stack id="6">
+		<caja color="azul"/>	
+		<caja color="rojo"/>
+	</stack>
+	<stack id="7">
+		<caja color="azul"/>
+	</stack>
+	<stack id="8">
+	
+	</stack>
+	
+</nivel>
+<solution>
+	<stack id="1">
+			
+	</stack>
+	<stack id="2">
+			<caja color="azul"/>
+			<caja color="azul"/>	
+			<caja color="azul"/>
+	</stack>
+	<stack id="3">
+			<caja color="azul"/>
+			<caja color="azul"/>
+			
+	</stack>
+	<stack id="4">
+	<caja color="azul"/>
+			<caja color="azul"/>
+			<caja color="azul"/>
+	</stack>
+	<stack id="5">
+
+	</stack>
+	<stack id="6">
+		<caja color="azul"/>
+	</stack>
+	<stack id="7">
+		<caja color="azul"/>
+	</stack>
+	<stack id="8">
+		<caja color="rojo"/>
+		<caja color="rojo"/>
+		<caja color="rojo"/>
+		<caja color="rojo"/>
+		<caja color="rojo"/>
+	</stack>
+</solution>
+
+</root>
+

@@ -18,7 +18,7 @@ class Change_Profile:
         self.heigth = 700
         self.blanco = sf.Color(250, 250, 250)
         self.negro =  sf.Color(0, 0, 0)
-        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "CARGO BOT - CHANGE PROFILE", sf.Style.Close)
+        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "DRAG BOX - CHANGE PROFILE", sf.Style.Close)
         self.Evento = sf.Event()
         self.window.SetFramerateLimit(60)
         self.usernames = Application.getFiles("profiles/")
@@ -30,17 +30,17 @@ class Change_Profile:
 
 
     def DefinirFondo(self):
-        self.Fondo = Application.createSfSprite(self.DIRECTORIO+"bgs/change_profile.png", 0, 0, 1200, 700)
+        self.Fondo = Application.createSfSprite(self.DIRECTORIO+"bgs/change_profile2.png", 0, 0, 1200, 700)
 
     def BotonHome(self):
         self.cambiarVentana()
 
     def DefinirBotones(self):
-        self.boton1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_choose_1.png", 434, 564, 367, 100)
-        self.boton2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_choose_2.png", 434, 564, 367, 100)
+        self.boton1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_choose_1.png", 434, 564, 367, 120)
+        self.boton2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_choose_2.png", 434, 564, 367, 120)
         
-        self.botonHome1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_home_1.png", 1115, 0, 85, 80)
-        self.botonHome2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_home_2.png", 1115, 0, 85, 80)
+        self.botonHome1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_home_1.png", 1200-157, 0, 157, 80)
+        self.botonHome2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_home_2.png", 1200-157, 0, 157, 80)
         
         self.botonPrev1 = Application.createSfSprite(self.DIRECTORIO+"buttons/scroll_prev_1.png", 0, 0, 130, 700)
         self.botonPrev2 = Application.createSfSprite(self.DIRECTORIO+"buttons/scroll_prev_2.png", 0, 0, 130, 700)
@@ -84,8 +84,6 @@ class Change_Profile:
                 self.usuarios[i][j].SetText(self.usernames[i*3+j])
         for j in range(jj):
             self.usuarios[ii-1][j].SetText(self.usernames[(ii-1)*3+j])
-
-        print "next?: " + str(self.nextUser)
         
 
     def SetConfTexto(self, sfString, x, y):
@@ -127,7 +125,7 @@ class Change_Profile:
                     self.isSelected = True
                     self.xSelected = i
                     self.ySelected = j
-                    self.selected.SetPosition(self.usuarios[i][j].GetPosition()[0] - 10,
+                    self.selected.SetPosition(self.usuarios[i][j].GetPosition()[0] - 25,
                                               self.usuarios[i][j].GetPosition()[1] - 3)
 
     def SiguientesUsuarios(self):
@@ -218,9 +216,9 @@ class Change_Profile:
 
 
     def BotonHovered(self, x, y):
-        if(x>434 and x<791 and y>564 and y<664):
+        if(x>434 and x<791 and y>564 and y<684):
             return "SELECT"
-        if(x>1115 and x<1200 and y>0 and y<80):
+        if(x>1200-157 and x<1200 and y>0 and y<80):
             return "HOME"
         if(x>0 and x<130 and y>200 and y<500):
             return "PREV"

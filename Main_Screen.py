@@ -14,7 +14,7 @@ class Main_Screen:
         self.heigth = 700
         self.blanco = sf.Color(250, 250, 250)
         self.negro =  sf.Color(0, 0, 0)
-        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "CARGO BOT - LETS START")
+        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "DRAG BOX - LETS START")
         self.Evento = sf.Event()
         self.window.SetFramerateLimit(60)
         self.sonidos = Sounds()

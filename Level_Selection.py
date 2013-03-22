@@ -42,16 +42,16 @@ class Level_Selection:
         image = sf.Image()
         image.LoadFromFile(self.DIRECTORIO+"buttons/button_home_1.png")
         self.botonHome1 = sf.Sprite(image)
-        self.botonHome1.Resize(85, 80)
+        self.botonHome1.Resize(157, 80)
         self.botonHome1.SetCenter(0, 0)
-        self.botonHome1.SetPosition(1115, 0)
+        self.botonHome1.SetPosition(1200-157, 0)
 
         image = sf.Image()
         image.LoadFromFile(self.DIRECTORIO+"buttons/button_home_2.png")
         self.botonHome2 = sf.Sprite(image)
-        self.botonHome2.Resize(85, 80)
+        self.botonHome2.Resize(157, 80)
         self.botonHome2.SetCenter(0, 0)
-        self.botonHome2.SetPosition(1115, 0)
+        self.botonHome2.SetPosition(1200-157, 0)
 
         #boton tutorial
         image = sf.Image()
@@ -127,7 +127,7 @@ class Level_Selection:
         nuevaVentana.Update()
 
     def BotonHovered(self, x, y):
-        if(x>1115 and x<1200 and y>0 and y<80):
+        if(x>1200-157 and x<1200 and y>0 and y<80):
             return "HOME"
         if(x>57 and x<380 and y>292 and y<605):
             return "TUTORIAL"

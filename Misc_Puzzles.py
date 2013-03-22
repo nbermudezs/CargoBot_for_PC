@@ -21,7 +21,7 @@ class Misc_Puzzles:
         self.heigth = 700
         self.blanco = sf.Color(250, 250, 250)
         self.negro =  sf.Color(0, 0, 0)
-        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "CARGO BOT - PUZZLES (GOD MODE)", sf.Style.Close)
+        self.window = sf.RenderWindow(sf.VideoMode(self.width, self.heigth), "DRAG BOX - PUZZLES (GOD MODE)", sf.Style.Close)
         self.Evento = sf.Event()
         self.window.SetFramerateLimit(60)
 
@@ -29,12 +29,7 @@ class Misc_Puzzles:
 
 
     def DefinirFondo(self):
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"bgs/godmode.png")
-        self.Fondo = sf.Sprite(image)
-        self.Fondo.Resize(1200, 700)
-        self.Fondo.SetCenter(0, 0)
-        self.Fondo.SetPosition(0,0)
+        self.Fondo = Application.createSfSprite(self.DIRECTORIO+"bgs/godmode.png", 0, 0, 1200, 700)
         
 
     def BotonHome(self):
@@ -58,225 +53,50 @@ class Misc_Puzzles:
         self.window.Close()
         nuevaVentana.Update()
 
+    def ShowTop(self, boton):
+        from Top_5 import Top_5
+        nuevaVentana = Top_5("GODMODE", boton)
+        nuevaVentana.sonidos = self.sonidos
+        self.window.Close()
+        nuevaVentana.Update()
+
     def DefinirBotones(self):
-        #boton home
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_home_1.png")
-        self.botonHome1 = sf.Sprite(image)
-        self.botonHome1.Resize(85, 80)
-        self.botonHome1.SetCenter(0, 0)
-        self.botonHome1.SetPosition(1115, 0)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_home_2.png")
-        self.botonHome2 = sf.Sprite(image)
-        self.botonHome2.Resize(85, 80)
-        self.botonHome2.SetCenter(0, 0)
-        self.botonHome2.SetPosition(1115, 0)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_back_1.png")
-        self.botonBack1 = sf.Sprite(image)
-        self.botonBack1.Resize(100, 100)
-        self.botonBack1.SetCenter(0, 0)
-        self.botonBack1.SetPosition(0, 0)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_back_2.png")
-        self.botonBack2 = sf.Sprite(image)
-        self.botonBack2.Resize(100, 100)
-        self.botonBack2.SetCenter(0, 0)
-        self.botonBack2.SetPosition(0, 0)
+        self.botonHome1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_home_1.png", 1200-157, 0, 157, 80)
+        self.botonHome2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_home_2.png", 1200-157, 0, 157, 80)
+        
+        self.botonBack1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_back_1.png", 0, 0, 80, 80)
+        self.botonBack2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_back_2.png", 0, 0, 80, 80)
 
 
         #botones numero hover
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_1_2.png")
-        self.num1_2 = sf.Sprite(image)
-        self.num1_2.Resize(360-77, 338-199)
-        self.num1_2.SetCenter(0, 0)
-        self.num1_2.SetPosition(77, 199)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_2_2.png")
-        self.num2_2 = sf.Sprite(image)
-        self.num2_2.Resize(360-77, 338-199)
-        self.num2_2.SetCenter(0, 0)
-        self.num2_2.SetPosition(451, 199)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_3_2.png")
-        self.num3_2 = sf.Sprite(image)
-        self.num3_2.Resize(360-77, 338-199)
-        self.num3_2.SetCenter(0, 0)
-        self.num3_2.SetPosition(822, 199)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_4_2.png")
-        self.num4_2 = sf.Sprite(image)
-        self.num4_2.Resize(360-77, 338-199)
-        self.num4_2.SetCenter(0, 0)
-        self.num4_2.SetPosition(77, 446)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_5_2.png")
-        self.num5_2 = sf.Sprite(image)
-        self.num5_2.Resize(360-77, 338-199)
-        self.num5_2.SetCenter(0, 0)
-        self.num5_2.SetPosition(451, 446)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_6_2.png")
-        self.num6_2 = sf.Sprite(image)
-        self.num6_2.Resize(360-77, 338-199)
-        self.num6_2.SetCenter(0, 0)
-        self.num6_2.SetPosition(822, 446)
-        #botones numero
+        self.num1_2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_1_2.png", 77, 199, 360 - 77, 338 - 199)
+        self.num2_2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_2_2.png", 451, 199, 360 - 77, 338 - 199)
+        self.num3_2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_3_2.png", 822, 199, 360 - 77, 338 - 199)
+        self.num4_2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_4_2.png", 77, 446, 360 - 77, 338 - 199)
+        self.num5_2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_5_2.png", 451, 446, 360 - 77, 338 - 199)
+        self.num6_2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_6_2.png", 822, 446, 360 - 77, 338 - 199)
         
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_1.png")
-        self.num1 = sf.Sprite(image)
-        self.num1.Resize(360-77, 338-199)
-        self.num1.SetCenter(0, 0)
-        self.num1.SetPosition(77, 199)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_2.png")
-        self.num2 = sf.Sprite(image)
-        self.num2.Resize(360-77, 338-199)
-        self.num2.SetCenter(0, 0)
-        self.num2.SetPosition(451, 199)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_3.png")
-        self.num3 = sf.Sprite(image)
-        self.num3.Resize(360-77, 338-199)
-        self.num3.SetCenter(0, 0)
-        self.num3.SetPosition(822, 199)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_4.png")
-        self.num4 = sf.Sprite(image)
-        self.num4.Resize(360-77, 338-199)
-        self.num4.SetCenter(0, 0)
-        self.num4.SetPosition(77, 446)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_5.png")
-        self.num5 = sf.Sprite(image)
-        self.num5.Resize(360-77, 338-199)
-        self.num5.SetCenter(0, 0)
-        self.num5.SetPosition(451, 446)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/button_6.png")
-        self.num6 = sf.Sprite(image)
-        self.num6.Resize(360-77, 338-199)
-        self.num6.SetCenter(0, 0)
-        self.num6.SetPosition(822, 446)
+        #botones numero
+        self.num1 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_1.png", 77, 199, 360 - 77, 338 - 199)
+        self.num2 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_2.png", 451, 199, 360 - 77, 338 - 199)
+        self.num3 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_3.png", 822, 199, 360 - 77, 338 - 199)
+        self.num4 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_4.png", 77, 446, 360 - 77, 338 - 199)
+        self.num5 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_5.png", 451, 446, 360 - 77, 338 - 199)
+        self.num6 = Application.createSfSprite(self.DIRECTORIO+"buttons/button_6.png", 822, 446, 360 - 77, 338 - 199)
         
 
     def DefinirEstrellas(self):
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/stars/1.png")
-        star1 = sf.Sprite(image)
-        star1.Resize(64, 64)
-        star1.SetCenter(0, 0)
-        star1.SetPosition(46, 294)
-        
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/stars/2.png")
-        star2 = sf.Sprite(image)
-        star2.Resize(64, 64)
-        star2.SetCenter(0, 0)
-        star2.SetPosition(421, 294)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/stars/3.png")
-        star3 = sf.Sprite(image)
-        star3.Resize(64, 64)
-        star3.SetCenter(0, 0)
-        star3.SetPosition(795, 551)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/stars/4.png")
-        star4 = sf.Sprite(image)
-        star4.Resize(64, 64)
-        star4.SetCenter(0, 0)
-        star4.SetPosition(46, 551)
-        
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/stars/5.png")
-        star5 = sf.Sprite(image)
-        star5.Resize(64, 64)
-        star5.SetCenter(0, 0)
-        star5.SetPosition(421, 551)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/stars/6.png")
-        star6 = sf.Sprite(image)
-        star6.Resize(64, 64)
-        star6.SetCenter(0, 0)
-        star6.SetPosition(795, 551)
-
         self.stars = []
-        self.stars.append(star1)
-        self.stars.append(star2)
-        self.stars.append(star3)
-        self.stars.append(star4)
-        self.stars.append(star5)
-        self.stars.append(star6)
+        positions = [(46, 294), (421, 294), (795, 294), (46, 551), (421, 551), (795, 551)]
+        for i in range(6):
+            self.stars.append(Application.createSfSprite(self.DIRECTORIO+"buttons/stars/"+str(i+1)+".png", positions[i][0], positions[i][1], 64, 64))
 
     def DefinirTops(self):
         self.tops = []
-        
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/top.png")
-        top = sf.Sprite(image)
-        top.Resize(110, 64)
-        top.SetCenter(0, 0)
-        top.SetPosition(292, 190)        
-        self.tops.append(top)
+        positions = [(292,190), (666,190), (1037,190), (292,438), (666,438), (1037,438)]
 
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/top.png")
-        top = sf.Sprite(image)
-        top.Resize(110, 64)
-        top.SetCenter(0, 0)
-        top.SetPosition(666, 190)        
-        self.tops.append(top)
-        
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/top.png")
-        top = sf.Sprite(image)
-        top.Resize(110, 64)
-        top.SetCenter(0, 0)
-        top.SetPosition(1037, 190)        
-        self.tops.append(top)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/top.png")
-        top = sf.Sprite(image)
-        top.Resize(110, 64)
-        top.SetCenter(0, 0)
-        top.SetPosition(292, 438)        
-        self.tops.append(top)
-
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/top.png")
-        top = sf.Sprite(image)
-        top.Resize(110, 64)
-        top.SetCenter(0, 0)
-        top.SetPosition(666, 438)        
-        self.tops.append(top)
-        
-        image = sf.Image()
-        image.LoadFromFile(self.DIRECTORIO+"buttons/top.png")
-        top = sf.Sprite(image)
-        top.Resize(110, 64)
-        top.SetCenter(0, 0)
-        top.SetPosition(1037, 438)        
-        self.tops.append(top)
+        for i in range(6):
+            self.tops.append(Application.createSfSprite(self.DIRECTORIO+"buttons/top.png", positions[i][0], positions[i][1], 110, 64))
 
     def PintarTops(self):
         for top in self.tops:
@@ -332,7 +152,14 @@ class Misc_Puzzles:
 
 
     def BotonHovered(self, x, y):
-        if(x>1115 and x<1200 and y>0 and y<80):
+        for i in range(6):
+            xi = self.tops[i].GetPosition()[0]
+            yi = self.tops[i].GetPosition()[1]
+            w = self.tops[i].GetSize()[0]
+            h = self.tops[i].GetSize()[1]
+            if(x<xi+w and x>xi and y<yi+h and y>yi):
+                return ("TOP", i+1)
+        if(x>1200-157 and x<1200 and y>0 and y<80):
             return "HOME"
         if(x<100 and y<100):
             return "BACK"
@@ -348,6 +175,7 @@ class Misc_Puzzles:
             return "5"
         if(x<1105 and x>882 and y<585 and y>446):
             return "6"
+        return (None, None)
     
     def Update(self):
         input = self.window.GetInput()
@@ -368,10 +196,12 @@ class Misc_Puzzles:
                 if self.Evento.Type == sf.Event.MouseButtonPressed:
                     if boton == "HOME":
                         self.BotonHome()
-                    if boton == "BACK":
+                    elif boton == "BACK":
                         self.BotonBack()
-                    if boton in ["1","2","3","4","5","6"]:
+                    elif boton in ["1","2","3","4","5","6"]:
                         self.LetsPlay(boton)
+                    elif boton[0] == "TOP":
+                        self.ShowTop(boton[1])
                         
             self.window.Clear()
             self.Pintar(boton)
